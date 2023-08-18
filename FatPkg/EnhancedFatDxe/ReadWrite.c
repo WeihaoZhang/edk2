@@ -280,7 +280,14 @@ FatIFileAccess (
       // Access a file
       //
       EndPosition = IFile->Position + *BufferSize;
+      Print(L"[SLT]11111 (%d) BufferSize 0x%x, OFile->FileSize = 0x%x EndPosition 0x%x\n", __LINE__, *BufferSize, OFile->FileSize, EndPosition);
       if (EndPosition > OFile->FileSize) {
+        UINT32 nzcv = 0;
+        asm volatile("mrs %0,nzcv" 
+        : "=r" (nzcv)
+        :
+        : "memory");
+        rint(L"[SLT]4444 (%d) BufferSize 0x%x, OFile->FileSize = 0x%x EndPosition 0x%x,nzcv %x\n", __LINE__, *BufferSize, (UINT64)(OFile->FileSize), (UINT64)EndPosition,nzcv);
         //
         // The position goes beyond the end of file
         //
